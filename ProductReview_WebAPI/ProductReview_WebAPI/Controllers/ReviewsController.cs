@@ -14,33 +14,34 @@ namespace ProductReview_WebAPI.Controllers
         {
             _context = context;
         }
-        // GET: api/<ReviewsController>
+
+        // GET: api/Reviews
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<ReviewsController>/5
+        // GET api/Reviews/{Id}
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<ReviewsController>
+        // POST api/Reviews
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<ReviewsController>/5
+        // PUT api/Reviews/{Id}
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<ReviewsController>/5
+        // DELETE api/Reviews/{Id}
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

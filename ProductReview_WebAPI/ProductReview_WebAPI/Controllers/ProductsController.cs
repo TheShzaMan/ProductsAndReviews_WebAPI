@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductReview_WebAPI.Data;
+using ProductReview_WebAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,33 +15,36 @@ namespace ProductReview_WebAPI.Controllers
         {
             _context = context;
         }
-        // GET: api/<ProductsController>
+
+        // GET: api/Products
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Product> Get()
         {
-            return new string[] { "value1", "value2" };
+            var products = _context.Products.ToList();
+
+            return products;
         }
 
-        // GET api/<ProductsController>/5
+        // GET api/Products/{Id}
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<ProductsController>
+        // POST api/Products
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<ProductsController>/5
+        // PUT api/Products/{Id}
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<ProductsController>/5
+        // DELETE api/Products/{Id}
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
