@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProductReview_WebAPI.DTOs;
 using ProductReview_WebAPI.Models;
 
 namespace ProductReview_WebAPI.Data
@@ -7,6 +8,7 @@ namespace ProductReview_WebAPI.Data
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Review> Reviews { get; set; }
+       
         public ApplicationDbContext(DbContextOptions options)
             : base(options)
         {
