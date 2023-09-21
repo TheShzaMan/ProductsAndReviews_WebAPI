@@ -43,7 +43,7 @@ namespace ProductReview_WebAPI.Controllers
 
         // POST api/Reviews
         [HttpPost]
-        public IActionResult Post([FromBody] Review review)
+        public IActionResult PostReview([FromBody] Review review)
         {
             _context.Reviews.Add(review);
             _context.SaveChanges();
@@ -53,7 +53,7 @@ namespace ProductReview_WebAPI.Controllers
 
         // PUT api/Reviews/{Id}
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Review reviewToUpdate)
+        public IActionResult PutReview(int id, [FromBody] Review reviewToUpdate)
         {
             var review = _context.Reviews
                .Where(r => r.Id == id).Single();
@@ -66,8 +66,13 @@ namespace ProductReview_WebAPI.Controllers
 
         // DELETE api/Reviews/{Id}
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult DeleteReview(int id)
         {
+            var reviewToDelete = _context.Reviews
+                .Find(id);
+            _context.Reviews.Remove(reviewToDelete);
+            _context.SaveChanges();
+            return NoContent();
         }
     }
 }
