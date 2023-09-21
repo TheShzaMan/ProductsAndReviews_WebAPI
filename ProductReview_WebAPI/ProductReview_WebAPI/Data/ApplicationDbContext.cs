@@ -7,7 +7,9 @@ namespace ProductReview_WebAPI.Data
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
+        //public DbSet<ProductDTO> ProductDTOs { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        //public DbSet<ReviewDTO> ReviewDTOs { get; set; }
        
         public ApplicationDbContext(DbContextOptions options)
             : base(options)

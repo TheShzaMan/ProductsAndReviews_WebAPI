@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProductReview_WebAPI.Data;
+using ProductReview_WebAPI.DTOs;
 using ProductReview_WebAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,7 +20,7 @@ namespace ProductReview_WebAPI.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public IEnumerable<Product> Get([FromQuery] double? maxPrice)
+        public IEnumerable<Product> GetProducts([FromQuery] double? maxPrice)
         {
             var products = _context.Products.ToList();
             if (maxPrice != null) 
@@ -30,21 +32,39 @@ namespace ProductReview_WebAPI.Controllers
 
         // GET api/Products/{Id}
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult GetProductById(int id)
         {
-            return "value";
+            var product = _context.Products
+                .Include(p => p.Reviews)
+                .Where(p => p.Id == id)
+                .Select(p => new ProductDTO
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Reviews = p.Reviews
+                    .Select(r => new ReviewDTO
+                    {
+                        Id = r.Id,
+                        Text = r.Text,
+                        Rating = r.Rating
+                    })
+                    .ToList(),
+                    AverageRating = p.Reviews.Average(r => r.Rating)
+                });
+            return Ok(product);
         }
 
+        // Post: api/Products
         [HttpPost]
         public IActionResult PostProduct([FromBody] Product product)
         {
             _context.Products.Add(product);
             _context.SaveChanges();
             return StatusCode(201, product);
-
         }
 
-        // PUT api/Products/{Id}
+        // PUT: api/Products/{Id}
         [HttpPut("{id}")]
         public IActionResult PutProduct(int id, [FromBody] Product ProductToUpdate)
         {
@@ -56,7 +76,7 @@ namespace ProductReview_WebAPI.Controllers
             return Ok(ProductToUpdate);
         }
 
-        // DELETE api/Products/{Id}
+        // DELETE: api/Products/{Id}
         [HttpDelete("{id}")]
         public IActionResult DeleteProduct(int id)
         {

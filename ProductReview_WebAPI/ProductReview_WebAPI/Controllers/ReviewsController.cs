@@ -21,7 +21,7 @@ namespace ProductReview_WebAPI.Controllers
 
         // GET: api/Reviews
         [HttpGet]
-        public IEnumerable<Review> Get()
+        public IEnumerable<Review> GetReviews()
         {
             var reviews = _context.Reviews.ToList();
                //.Select(r => new ReviewDTO
@@ -35,7 +35,7 @@ namespace ProductReview_WebAPI.Controllers
 
         // GET api/Reviews/{Id}
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetReviewById(int id)
         {
                 var review = _context.Reviews
                     .Find(id);
