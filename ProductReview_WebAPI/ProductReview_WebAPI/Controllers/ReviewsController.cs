@@ -32,6 +32,7 @@ namespace ProductReview_WebAPI.Controllers
                // }).ToList();
             return reviews;
         }
+
         // GET api/Reviews/{Id}
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -73,6 +74,15 @@ namespace ProductReview_WebAPI.Controllers
             _context.Reviews.Remove(reviewToDelete);
             _context.SaveChanges();
             return NoContent();
+        }
+
+        // Get api/Reviews/ProductId/{productId}
+        [HttpGet("ProductId/{productId}")]
+        public IActionResult GetByProductId(int productId)
+        {
+            var reviews = _context.Reviews
+                .Where(r => r.ProductId == productId);
+            return Ok(reviews);
         }
     }
 }
