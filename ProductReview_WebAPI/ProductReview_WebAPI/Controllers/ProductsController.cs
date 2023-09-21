@@ -18,10 +18,13 @@ namespace ProductReview_WebAPI.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public IEnumerable<Product> Get()
+        public IEnumerable<Product> Get([FromQuery] double? maxPrice)
         {
             var products = _context.Products.ToList();
-
+            if (maxPrice != null) 
+            {
+                products = products.Where(p => p.Price < maxPrice).ToList();
+            }
             return products;
         }
 
@@ -32,22 +35,36 @@ namespace ProductReview_WebAPI.Controllers
             return "value";
         }
 
-        // POST api/Products
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult PostProduct([FromBody] Product product)
         {
+            _context.Products.Add(product);
+            _context.SaveChanges();
+            return StatusCode(201, product);
+
         }
 
         // PUT api/Products/{Id}
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult PutProduct(int id, [FromBody] Product ProductToUpdate)
         {
+            var product = _context.Products
+               .Where(p => p.Id == id).Single();
+            product.Name = ProductToUpdate.Name;
+            product.Price = ProductToUpdate.Price;
+            _context.SaveChanges();
+            return Ok(ProductToUpdate);
         }
 
         // DELETE api/Products/{Id}
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult DeleteProduct(int id)
         {
+            var productToDelete = _context.Products
+                .Find(id);
+            _context.Products.Remove(productToDelete);
+            _context.SaveChanges();
+            return NoContent();
         }
     }
 }
